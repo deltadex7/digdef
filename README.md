@@ -1,6 +1,17 @@
-# Game Off 2020
+# DigDef: Dig and Defend
+
+Dig the lunar grounds and defend your miner from enemies!
+
+A submission for GitHub [Game Off 2020](https://itch.io/jam/game-off-2020)
+under the theme "Moonshot".
 
 ## Build
+
+Clone this repo with:
+
+```
+git clone https://github.com/deltadex7/digdef.git --recurse-submodules
+```
 
 Build script taken from [dependency-less raylib projects scripts][rl-scr].
 
@@ -11,7 +22,7 @@ The only dependency is the C compiler. On Windows, you'll need to install
 Make sure the compiler path is set in line 37 of
 [`build-windows.bat`](build-windows.bat).
 
-## Script customization
+### Script customization
 
 First of all, the scripts have a few variables at the very top, which
 are supposed to be configured for each project separately:
@@ -22,13 +33,13 @@ are supposed to be configured for each project separately:
   executable. You can use wildcards, so if you have all your .c files
   in a directory called `src`, you can just set `SOURCES` to
   `../../src/*.c`. Note: the paths should be either absolute, or
-  relative to `builds/platform`, hence `../../`.
-- `RAYLIB_SRC` should point to the raylib/src directory. In this case,
-  it's `../../src`, but as with the `SOURCES`, if the path is
-  relative, it should be relative to `temp/debug`, so it's actually
-  `../../../../src`.
+  relative to `builds/platform`, hence `../../`, or relative to
+  workspace directory: `./`.
+- `RAYLIB_SRC` should point to the raylib/src directory. 
+  In this case, it points to `./lib/raylib/src`, which links directly to
+  the original raylib repo as a submodule.
 
-## Compilation flags
+### Compilation flags
 
 - `-Os` (`/O1` with MSVC, `-O2` with clang\*) is used for release
   builds, to save space. Since it's a good practice to make your games
