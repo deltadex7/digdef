@@ -1,3 +1,11 @@
-temp/
-builds/
+[Tt]emp/
+[Bb]uilds/
 builds-debug/
+BuildsDebug/
+
+# compiled binaries
+*.o
+*.exe
+*.a
+*.bc
+*.so
