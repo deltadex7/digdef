@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "raylib.h"
 
+#pragma region Ground
 /**
  * @brief Color for individual ground/block unit
  * 
@@ -56,13 +57,17 @@ Color RaylibGroundColor(GroundColor color)
   case CBLACK:
     return BLACK;
   }
+  return BLANK;
 }
+#pragma endregion Ground
 
+#pragma region Piece
 /**
  * Name of pieces, based on tetromino
  * */
 typedef enum PieceName
 {
+  NoPiece,
   PieceI,
   PieceJ,
   PieceL,
@@ -131,6 +136,9 @@ void SetPieceData(PieceName n, int pdata[4])
     for (int i = 0; i < 4; i++)
       pdata[i] = PieceZData[i];
     break;
+  default:
+    for (int i = 0; i < 4; i++)
+      pdata[i] = 0;
   }
 }
 
@@ -159,6 +167,7 @@ GroundColor GetPieceColor(PieceName name)
   case PieceZ:
     return CRED;
   }
+  return CNONE;
 }
 
 /**
@@ -242,5 +251,7 @@ void PieceRotate(PieceState *rot, PieceRotation delta)
     break;
   }
 }
+
+#pragma endregion Piece
 
 #endif
