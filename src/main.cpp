@@ -1,29 +1,26 @@
 /*******************************************************************************************
 *
-*   raylib [core] example - Basic window
+*   DigDef: Dig and Defend
 *
-*   Welcome to raylib!
+*   Dig the lunar grounds and defend your miner from enemies!
 *
-*   To test examples, just press F6 and execute raylib_compile_execute script
-*   Note that compiled executable is placed in the same folder as .c file
+*   A submission for GitHub [Game Off 2020](https://itch.io/jam/game-off-2020)
+*   under the theme "Moonshot".
 *
-*   You can find all basic examples on C:\raylib\raylib\examples folder or
-*   raylib official webpage: www.raylib.com
+*   This project is created using raylib 3.0 (www.raylib.com).
+*   raylib is licensed under an unmodified zlib/libpng license
+*   (View raylib.h for details)
 *
-*   Enjoy using raylib. :)
-*
-*   This example has been created using raylib 1.0 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
-*
-*   Copyright (c) 2013-2016 Ramon Santamaria (@raysan5)
+*   Copyright (c) 2020 Delta Dextra (@deltadex7)
 *
 ********************************************************************************************/
 
 #include "raylib.h"
-#include <time.h>
-#include <stdlib.h>
+#include <ctime>
+#include <cstdlib>
 #include "piece.hpp"
 #include "queue.hpp"
+#include <cstdio>
 
 int main()
 {
@@ -33,6 +30,7 @@ int main()
   int screenWidth = 1280;
   int screenHeight = 720;
   bool firstPiece = true;
+  bool hasHeld = false;
   PieceState currentpiece(true);
   PieceQueue queue(5);
 
@@ -59,7 +57,10 @@ int main()
     //----------------------------------------------------------------------------------
 
     if (IsKeyPressed(' '))
+    {
       currentpiece = queue.ShiftPieceQueue();
+      hasHeld = false;
+    }
     if (IsKeyPressed('F'))
       currentpiece.Rotate(RIGHT);
     if (IsKeyPressed('D'))
@@ -67,7 +68,11 @@ int main()
     if (IsKeyPressed('S'))
       currentpiece.Rotate(DOUBLE);
     if (IsKeyPressed('A'))
-      currentpiece = queue.HoldPiece(currentpiece);
+      if (!hasHeld)
+      {
+        currentpiece = queue.HoldPiece(currentpiece);
+        hasHeld = true;
+      }
     // Draw
     //----------------------------------------------------------------------------------
     BeginDrawing();
