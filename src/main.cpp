@@ -22,21 +22,21 @@
 #include "raylib.h"
 #include <time.h>
 #include <stdlib.h>
-#include "piece.h"
+#include "piece.hpp"
+#include "queue.hpp"
 
 int main()
 {
   // Initialization
   //--------------------------------------------------------------------------------------
+  srand((unsigned)time(NULL));
   int screenWidth = 1280;
   int screenHeight = 720;
   bool firstPiece = true;
-  PieceState currentpiece;
-
-  time_t time;
+  PieceState currentpiece(true);
+  PieceQueue queue(5);
 
   InitWindow(screenWidth, screenHeight, "game");
-  srand(&time);
 
   int blockSize = 32;
   int centerWidth = screenWidth / 2;
@@ -50,7 +50,7 @@ int main()
   {
     if (firstPiece)
     {
-      currentpiece = NewPiece();
+      currentpiece = queue.ShiftPieceQueue();
       firstPiece = false;
     }
     // Update
@@ -58,32 +58,40 @@ int main()
     // TODO: Update your variables here
     //----------------------------------------------------------------------------------
 
-    if (IsKeyPressed('R'))
-      currentpiece = NewPiece();
+    if (IsKeyPressed(' '))
+      currentpiece = queue.ShiftPieceQueue();
     if (IsKeyPressed('F'))
-      PieceRotate(&currentpiece, RIGHT);
+      currentpiece.Rotate(RIGHT);
     if (IsKeyPressed('D'))
-      PieceRotate(&currentpiece, LEFT);
+      currentpiece.Rotate(LEFT);
     if (IsKeyPressed('S'))
-      PieceRotate(&currentpiece, DOUBLE);
+      currentpiece.Rotate(DOUBLE);
+    if (IsKeyPressed('A'))
+      currentpiece = queue.HoldPiece(currentpiece);
     // Draw
     //----------------------------------------------------------------------------------
     BeginDrawing();
-
     {
       ClearBackground(DARKGRAY);
 
-      for (int i = 0; i < 4; ++i)
+      // Draw current
+      currentpiece.Draw(centerWidth, centerHeight, blockSize);
+
+      // Draw queue
+      int pos = 0;
+      for (auto i = queue.queue.begin(); i < queue.queue.end(); i++, pos++)
       {
-        DrawRectangle(
-            centerWidth + (currentpiece.piece[i] % 5 - 2) * blockSize,
-            centerHeight + (currentpiece.piece[i] / 5 - 2) * blockSize,
-            blockSize, blockSize, RaylibGroundColor(currentpiece.color[i]));
+        i->Draw(
+            centerWidth + 8 * blockSize,
+            centerHeight + (pos - 2) * 5 * blockSize,
+            blockSize);
       }
+
+      // Draw hold
+      queue.hold.Draw(centerWidth - 8 * blockSize, centerHeight, blockSize);
 
       // DrawText("Congrats! You created your first window!", 190, 200, 20, WHITE);
     }
-
     EndDrawing();
     //----------------------------------------------------------------------------------
   }
