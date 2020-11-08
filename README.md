@@ -13,6 +13,8 @@ Clone this repo with:
 git clone https://github.com/deltadex7/digdef.git --recurse-submodules
 ```
 
+This will also clone raylib v3.0 from its [source][raylib-src]
+
 Build script taken from [dependency-less raylib projects scripts][rl-scr].
 
 ### Dependencies
@@ -35,9 +37,13 @@ are supposed to be configured for each project separately:
   `../../src/*.c`. Note: the paths should be either absolute, or
   relative to `builds/platform`, hence `../../`, or relative to
   workspace directory: `./`.
-- `RAYLIB_SRC` should point to the raylib/src directory. 
+- `RAYLIB_SRC` should point to the raylib/src directory.
   In this case, it points to `./lib/raylib/src`, which links directly to
   the original raylib repo as a submodule.
+- `CC` and `GCC` defines the compiler to build the program and raylib
+  respectively. raylib uses `GCC`, as it is a C library. `CC` should be a
+  C++ compiler, like `g++` or `clang++`. They can be overridden at execution
+  by passing in the environment variables before executing the script.
 
 ### Compilation flags
 
@@ -75,13 +81,14 @@ requires that you have upx installed and on your path, of course.
 
 #### Examples
 
-| What the command does                                       | Command                   |
-| ----------------------------------------------------------- | ------------------------- |
-| Build a release build, on Windows                           | `build-windows.bat`       |
-| Build a release build, full recompile, on Linux             | `./build-linux.sh -c`     |
-| Build a debug build and run, on macOS                       | `./build-osx.sh -d -r`    |
-| Build in debug, run, don't print at all, on Linux with `sh` | `sh build-linux.sh -drqq` |
+| What the command does                                       | Command                           |
+| ----------------------------------------------------------- | --------------------------------- |
+| Build a release build, on Windows                           | `build-windows.bat`               |
+| Build a release build, full recompile, on Linux             | `./build-linux.sh -c`             |
+| Build a debug build using clang and run, on macOS           | `CC=clang++ ./build-osx.sh -d -r` |
+| Build in debug, run, don't print at all, on Linux with `sh` | `sh build-linux.sh -drqq`         |
 
-[visual-studio]: https://visualstudio.microsoft.com/downloads/#visual-studio-community-2017
-[vs-tools]: https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2017
+[visual-studio]: https://visualstudio.microsoft.com/downloads/
+[vs-tools]: https://visualstudio.microsoft.com/downloads/
 [rl-scr]: https://github.com/raysan5/raylib/tree/master/projects/scripts
+[raylib-src]: https://github.com/raysan5/raylib/tree/3.0.0
